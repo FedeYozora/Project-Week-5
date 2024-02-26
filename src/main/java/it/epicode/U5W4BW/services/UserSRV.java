@@ -60,7 +60,7 @@ public class UserSRV {
     }
 
 
-    public String uploadImageForUser(MultipartFile image, UUID id) throws IOException {
+    public String uploadAvatar(MultipartFile image, UUID id) throws IOException {
         String url = (String) cloudinaryUploader.uploader().upload(image.getBytes(),
                 ObjectUtils.emptyMap()).get("url");
 

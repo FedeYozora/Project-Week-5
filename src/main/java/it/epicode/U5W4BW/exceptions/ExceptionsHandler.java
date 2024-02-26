@@ -2,7 +2,6 @@ package it.epicode.U5W4BW.exceptions;
 
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,6 +25,12 @@ public class ExceptionsHandler {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND) // 404
     public ErrorsPayload handleNotFound(NotFoundException ex) {
+        return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(UUIDNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND) // 404
+    public ErrorsPayload handleNotFound(UUIDNotFoundException ex) {
         return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
     }
 
