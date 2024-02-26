@@ -28,4 +28,11 @@ public class Address {
     private Municipality municipality;
 
 
+    public Address(String street, String streetNumber, String city, String zipCode, Municipality municipality) {
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.municipality = municipality;
+    }
 }
