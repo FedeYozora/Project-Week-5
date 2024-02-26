@@ -2,11 +2,14 @@ package it.epicode.U5W4BW.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import it.epicode.U5W4BW.entities.Address;
 import it.epicode.U5W4BW.entities.Client;
+import it.epicode.U5W4BW.exceptions.BadRequestException;
 import it.epicode.U5W4BW.exceptions.NotFoundException;
 import it.epicode.U5W4BW.exceptions.UUIDNotFoundException;
 import it.epicode.U5W4BW.payloads.NewClientDTO;
 import it.epicode.U5W4BW.repositories.ClientDAO;
+import it.epicode.U5W4BW.repositories.MunicipalityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +27,9 @@ public class ClientSRV {
     private ClientDAO clientDAO;
 
     @Autowired
+    private MunicipalityDAO municipalityDAO;
+
+    @Autowired
     private Cloudinary cloudinaryUploader;
 
 
@@ -32,6 +38,27 @@ public class ClientSRV {
         Pageable pageable = PageRequest.of(pageNum, size, Sort.by(orderBy));
         return clientDAO.findAll(pageable);
 
+    }
+
+    public Client saveClient(NewClientDTO newClient) {
+        clientDAO.findByEmail(newClient.email()).ifPresent(user -> {
+            throw new BadRequestException("Email " + newClient.email() + " is already used!");
+        });
+        Client client = new Client(
+                newClient.businessName(),
+                newClient.vatNumber(),
+                newClient.email(),
+                newClient.verifiedEmail(),
+                newClient.phoneNumber(),
+                newClient.contactEmail(),
+                newClient.contactName(),
+                newClient.contactSurname(),
+                newClient.contactPhoneNumber(),
+                newClient.type(),
+                this.getAddress(newClient),
+                this.getAddress(newClient)
+        );
+        return clientDAO.save(client);
     }
 
     public Client getClientById(UUID id) {
@@ -50,7 +77,8 @@ public class ClientSRV {
         found.setContactSurname(updatedClient.contactSurname());
         found.setContactPhoneNumber(updatedClient.contactPhoneNumber());
         found.setType(updatedClient.type());
-
+        found.setRegisteredAddress(this.getAddress(updatedClient));
+        found.setHeadquartersAddress(this.getAddress(updatedClient));
         clientDAO.save(found);
         return found;
     }
@@ -65,7 +93,6 @@ public class ClientSRV {
 
     }
 
-
     public String uploadAvatar(MultipartFile image, UUID id) throws IOException {
         String url = (String) cloudinaryUploader.uploader().upload(image.getBytes(),
                 ObjectUtils.emptyMap()).get("url");
@@ -74,6 +101,15 @@ public class ClientSRV {
         found.setClientLogo(String.valueOf(url));
         clientDAO.save(found);
         return url;
+    }
+
+    public Address getAddress(NewClientDTO newClientDTO){
+        return new Address(
+                newClientDTO.street(),
+                newClientDTO.streetNumber(),
+                newClientDTO.city(),
+                newClientDTO.zipCode(),
+                municipalityDAO.findByName(newClientDTO.municipalityName()));
     }
 
 

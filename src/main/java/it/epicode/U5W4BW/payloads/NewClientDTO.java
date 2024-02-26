@@ -37,9 +37,25 @@ public record NewClientDTO(
         String contactPhoneNumber,
         @NotBlank(message = "Type cannot be blank")
         @Enumerated(EnumType.STRING)
-        ClientType type
-
-
+        ClientType type,
+        @NotBlank(message = "Street cannot be blank")
+        @Size(min = 10, message = "Street's length must be at least 10 characters")
+        String street,
+        @NotBlank(message = "Street number cannot be blank")
+        @Size(min = 1, message = "Street's number length must be at least 1 character")
+        String streetNumber,
+        @NotBlank(message = "City cannot be blank")
+        @Size(min = 3, message = "City's length must be at least 3 character")
+        String city,
+        @NotBlank(message = "Zip code cannot be blank")
+        @Size(min = 4, message = "Zip code's length must be at least 4 character")
+        String zipCode,
+        @NotBlank(message = "Province name cannot be blank")
+        @Size(min = 3, message = "Province name's length must be at least 3 character")
+        String provinceName,
+        @NotBlank(message = "Municipality name cannot be blank")
+        @Size(min = 3, message = "Municipality name's length must be at least 3 character")
+        String municipalityName
 ) {
 }
 

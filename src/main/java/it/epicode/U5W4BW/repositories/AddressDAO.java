@@ -1,6 +1,7 @@
 package it.epicode.U5W4BW.repositories;
 
 import it.epicode.U5W4BW.entities.Address;
+import it.epicode.U5W4BW.entities.Municipality;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

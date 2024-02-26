@@ -1,6 +1,7 @@
 package it.epicode.U5W4BW.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import it.epicode.U5W4BW.utilities.UserRoleConverter;
 import it.epicode.U5W4BW.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -31,6 +32,7 @@ public class User implements UserDetails {
     private String password;
     private String name;
     private String surname;
+    @Convert(converter = UserRoleConverter.class)
     private Set<UserRole> roles = new HashSet<>();
     private String avatar;
 
