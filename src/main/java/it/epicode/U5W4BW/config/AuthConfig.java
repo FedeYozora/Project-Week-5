@@ -1,5 +1,6 @@
-package it.epicode.U5W4BW.security;
+package it.epicode.U5W4BW.config;
 
+import it.epicode.U5W4BW.security.JWTFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class Config {
+public class AuthConfig {
     @Autowired
     private JWTFilter jwtFilter;
 
@@ -30,9 +31,7 @@ public class Config {
 
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-
         httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/**").permitAll());
-        ;
 
         return httpSecurity.build();
     }
