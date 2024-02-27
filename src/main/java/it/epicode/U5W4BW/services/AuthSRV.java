@@ -43,7 +43,7 @@ public class AuthSRV {
             throw new BadRequestException("Email " + user.getEmail() + " already in use!");
         });
         //Setto il ruolo di base come user
-        UserRole userRole = userRoleDAO.findByRole("user").orElseThrow(() -> new NotFoundException("Role not found"));
+        UserRole userRole = userRoleDAO.findByRole("USER").orElseThrow(() -> new NotFoundException("Role not found"));
 
         User newUser = new User(
                 payload.email(),
