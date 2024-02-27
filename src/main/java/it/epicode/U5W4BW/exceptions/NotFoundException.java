@@ -11,7 +11,7 @@ public class NotFoundException extends RuntimeException {
         super("Element with uuid " + id + " not found");
     }
 
-    public NotFoundException(String mail) {
-        super("Element with email " + mail + " not found");
+    public NotFoundException(String element) {
+        super("Element: " + element + " not found");
     }
 }
