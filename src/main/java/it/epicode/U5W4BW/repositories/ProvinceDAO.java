@@ -8,5 +8,7 @@ import java.util.UUID;
 
 @Repository
 public interface ProvinceDAO extends JpaRepository<Province, UUID> {
+
+
     Province findByName(String name);
 }

@@ -1,6 +1,7 @@
 package it.epicode.U5W4BW.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.opencsv.bean.CsvBindByPosition;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +21,11 @@ public class Municipality {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private UUID id;
-
+    @CsvBindByPosition(position = 0)
     private String provinceCode;
+    @CsvBindByPosition(position = 1)
+    private String provinceSerial;
+    @CsvBindByPosition(position = 2)
     private String name;
 
     @JsonIgnore
@@ -32,8 +36,9 @@ public class Municipality {
     @JoinColumn(name = "province_id")
     private Province province;
 
-    public Municipality(String provinceCode, String name) {
+    public Municipality(String provinceCode, String provinceSerial, String name) {
         this.provinceCode = provinceCode;
+        this.provinceSerial = provinceSerial;
         this.name = name;
     }
 }
