@@ -25,7 +25,7 @@ public class UserRoleCTRL {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<UserRole> getUserRoles(@RequestParam(defaultValue = "0") int page,
+    public Page<UserRole> getRoles(@RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size,
                                        @RequestParam(defaultValue = "id") String orderBy) {
         return this.userRoleSRV.getUserRoles(page, size, orderBy);
@@ -33,7 +33,7 @@ public class UserRoleCTRL {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public UserRole getUserById(@PathVariable UUID id) {
+    public UserRole getRoleById(@PathVariable UUID id) {
         return this.userRoleSRV.getUserRoleById(id);
     }
 
@@ -51,7 +51,7 @@ public class UserRoleCTRL {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable UUID id) {
+    public void deleteRoleById(@PathVariable UUID id) {
         this.userRoleSRV.deleteRole(id);
     }
 }

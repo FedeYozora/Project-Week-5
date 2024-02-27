@@ -1,13 +1,8 @@
 package it.epicode.U5W4BW.services;
 
-import it.epicode.U5W4BW.entities.Client;
-import it.epicode.U5W4BW.entities.Invoice;
-import it.epicode.U5W4BW.entities.User;
 import it.epicode.U5W4BW.entities.UserRole;
 import it.epicode.U5W4BW.exceptions.BadRequestException;
 import it.epicode.U5W4BW.exceptions.NotFoundException;
-import it.epicode.U5W4BW.exceptions.UUIDNotFoundException;
-import it.epicode.U5W4BW.payloads.InvoiceDTO;
 import it.epicode.U5W4BW.payloads.UserRoleDTO;
 import it.epicode.U5W4BW.repositories.UserDAO;
 import it.epicode.U5W4BW.repositories.UserRoleDAO;
@@ -36,8 +31,7 @@ public class UserRoleSRV {
     }
 
     public UserRole saveRole(UserRoleDTO newRole) {
-        userRoleDAO.findByRole(newRole.role().toUpperCase())
-                .ifPresent(userRole -> {
+        userRoleDAO.findByRole(newRole.role().toUpperCase()).ifPresent(userRole -> {
                     throw new BadRequestException("Role " + newRole.role().toUpperCase() + " already exist!");
                 });
         UserRole userRole = new UserRole(newRole.role().toUpperCase());
