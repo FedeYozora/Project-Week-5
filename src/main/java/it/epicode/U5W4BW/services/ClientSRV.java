@@ -55,8 +55,8 @@ public class ClientSRV {
                 newClient.contactSurname(),
                 newClient.contactPhoneNumber(),
                 newClient.type(),
-                this.getAddress(newClient),
-                this.getAddress(newClient)
+                getAddress(newClient),
+                getAddress(newClient)
         );
         return clientDAO.save(client);
     }
@@ -77,8 +77,8 @@ public class ClientSRV {
         found.setContactSurname(updatedClient.contactSurname());
         found.setContactPhoneNumber(updatedClient.contactPhoneNumber());
         found.setType(updatedClient.type());
-        found.setRegisteredAddress(this.getAddress(updatedClient));
-        found.setHeadquartersAddress(this.getAddress(updatedClient));
+        found.setRegisteredAddress(getAddress(updatedClient));
+        found.setHeadquartersAddress(getAddress(updatedClient));
         clientDAO.save(found);
         return found;
     }
@@ -103,7 +103,7 @@ public class ClientSRV {
         return url;
     }
 
-    public Address getAddress(NewClientDTO newClientDTO){
+    public Address getAddress(NewClientDTO newClientDTO) {
         return new Address(
                 newClientDTO.street(),
                 newClientDTO.streetNumber(),
