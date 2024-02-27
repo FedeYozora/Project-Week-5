@@ -45,16 +45,12 @@ public class ReadCSVConfig {
                 .withSeparator(';')
                 .withSkipLines(1)
                 .build().parse();
-
-
         if (provinceDAO != null) {
             for (Province province : beans) {
                 Province newProvince = new Province(province.getName(), province.getAcronym(), province.getRegion());
                 provinceSRV.save(newProvince);
             }
         }
-
-
         return beans;
     }
 
@@ -67,11 +63,13 @@ public class ReadCSVConfig {
                 .withSkipLines(1)
                 .build().parse();
 
+        int provinceSerialCounter = 1;
         if (municipalityDAO != null) {
             for (Municipality municipality : beans) {
                 String name = String.valueOf(municipality.getTempProvince());
                 String correctName = null;
                 Province province = null;
+                
                 switch (name) {
                     case "Monza e della Brianza":
                         province = provinceDAO.findByName("Monza-Brianza");
@@ -152,6 +150,15 @@ public class ReadCSVConfig {
                         provinceDAO.save(province);
                 }
                 Province found = provinceDAO.findByName(correctName);
+                if (name.equals("Sassari")) {
+                    String stringComp = "00" + provinceSerialCounter;
+                    if (stringComp.length() > 3) {
+                        stringComp = stringComp.substring(1);
+                    }
+                    municipality.setProvinceSerial(stringComp);
+                    provinceSerialCounter++;
+                }
+
                 if (found != null) {
                     Municipality newMunicipality = new Municipality(municipality.getProvinceCode(), municipality.getProvinceSerial(), municipality.getName());
                     newMunicipality.setProvince(found);
