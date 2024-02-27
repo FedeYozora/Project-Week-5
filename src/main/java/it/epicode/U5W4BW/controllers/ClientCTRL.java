@@ -36,7 +36,7 @@ public class ClientCTRL {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    private Client saveClient(@RequestBody @Validated NewClientDTO newClient, BindingResult validation) {
+    public Client saveClient(@RequestBody @Validated NewClientDTO newClient, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
         }
