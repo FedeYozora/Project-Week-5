@@ -38,6 +38,7 @@ public class Client {
     private String contactSurname;
     private String contactPhoneNumber;
     private String clientLogo;
+    @Enumerated(EnumType.STRING)
     private ClientType type;
 
     @JsonIgnore
