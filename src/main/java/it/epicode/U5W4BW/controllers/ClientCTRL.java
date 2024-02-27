@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
@@ -34,7 +35,9 @@ public class ClientCTRL {
         return this.clientSRV.getClientById(id);
     }
 
+
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ADMIN')")
     public Client saveClient(@RequestBody @Validated NewClientDTO newClient, BindingResult validation) {
         if (validation.hasErrors()) {
@@ -57,6 +60,44 @@ public class ClientCTRL {
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteClientById(@PathVariable UUID id) {
         this.clientSRV.deleteClient(id);
+
+    }
+
+    @GetMapping("/filter")
+    public Page<Client> getByFilter(@RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "5") int size,
+                                    @RequestParam(defaultValue = "id") String order,
+                                    @RequestParam(required = false) String name,
+                                    @RequestParam(required = false) LocalDate creationDate,
+                                    @RequestParam(required = false) Double yearlyIncome,
+                                    @RequestParam(required = false) LocalDate lastContactDate) {
+        if (name != null) {
+            try {
+                return clientSRV.findByContactNameStartingWithIgnoreCase(page, size, order, name);
+            } catch (BadRequestException e) {
+                throw new BadRequestException("Insert a valid Name");
+            }
+
+        } else if (creationDate != null) {
+            try {
+                return clientSRV.findByCreationDate(page, size, order, creationDate);
+            } catch (BadRequestException e) {
+                throw new BadRequestException("Insert a valid Date");
+            }
+        } else if (yearlyIncome != null) {
+            try {
+                return clientSRV.findByYearlyIncome(page, size, order, yearlyIncome);
+            } catch (NumberFormatException e) {
+                throw new BadRequestException("Insert a valid number");
+            }
+        } else if (lastContactDate != null) {
+            try {
+                return clientSRV.findByLastContactDate(page, size, order, lastContactDate);
+            } catch (NumberFormatException e) {
+                throw new BadRequestException("Insert a valid Date");
+            }
+        }
+        throw new BadRequestException("Please check your request parameters...");
     }
 
 }

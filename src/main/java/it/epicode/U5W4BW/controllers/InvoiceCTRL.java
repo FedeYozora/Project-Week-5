@@ -12,6 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceCTRL {
@@ -50,5 +53,50 @@ public class InvoiceCTRL {
         this.invoiceSRV.deleteInvoice(id);
     }
 
+    @GetMapping("/filter")
+    public Page<Invoice> getRequests(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size,
+                                     @RequestParam(defaultValue = "id") String orderBy,
+                                     @RequestParam(required = false) String client_id,
+                                     @RequestParam(required = false) LocalDate date,
+                                     @RequestParam(required = false) String year,
+                                     @RequestParam(required = false) String amount1,
+                                     @RequestParam(required = false) String amount2) {
 
+        if (client_id != null) {
+            try {
+                return invoiceSRV.findByIdClient(page, size, orderBy, UUID.fromString((client_id)));
+            } catch (NumberFormatException e) {
+                throw new BadRequestException("Insert a valid client UUID");
+            }
+        }
+
+        if (date != null) {
+            try {
+                return invoiceSRV.findByEmissionDate(page, size, orderBy, date);
+            } catch (NumberFormatException e) {
+                throw new BadRequestException("Insert a valid year");
+            }
+        }
+
+        if (year != null) {
+            try {
+                return invoiceSRV.findByYear(page, size, orderBy, Integer.parseInt(year));
+            } catch (NumberFormatException e) {
+                throw new BadRequestException("Insert a valid date");
+            }
+
+        }
+
+        if (amount1 != null && amount2 != null) {
+            try {
+                return invoiceSRV.findByAmount(page, size, orderBy, Double.parseDouble(amount1), Double.parseDouble(amount2));
+            } catch (NumberFormatException e) {
+                throw new BadRequestException("Insert a valid amount");
+            }
+        }
+
+
+        throw new BadRequestException("Please check your request parameters...");
+    }
 }
