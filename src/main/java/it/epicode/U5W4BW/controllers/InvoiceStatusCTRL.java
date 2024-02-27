@@ -21,6 +21,7 @@ public class InvoiceStatusCTRL {
     private InvoiceStatusSRV invoiceStatusSRV;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('USER' , 'ADMIN')")
     public Page<InvoiceStatus> getInvoiceStatus(@RequestParam(defaultValue = "0") int page,
                                                 @RequestParam(defaultValue = "10") int size,
                                                 @RequestParam(defaultValue = "id") String orderBy) {
@@ -28,6 +29,7 @@ public class InvoiceStatusCTRL {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER' , 'ADMIN')")
     public InvoiceStatus getInvoiceStatusById(@PathVariable UUID id) {
         return this.invoiceStatusSRV.getInvoiceStatusById(id);
     }
