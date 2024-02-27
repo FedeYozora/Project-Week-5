@@ -1,13 +1,11 @@
 package it.epicode.U5W4BW.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import it.epicode.U5W4BW.utilities.UserRoleConverter;
-import it.epicode.U5W4BW.enums.UserRole;
+import it.epicode.U5W4BW.enums.UserRoleType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.apache.commons.lang3.builder.ToStringExclude;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 @Entity
-@Table
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,9 +30,13 @@ public class User implements UserDetails {
     private String password;
     private String name;
     private String surname;
-    @Convert(converter = UserRoleConverter.class)
-    private Set<UserRole> roles = new HashSet<>();
     private String avatar;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<UserRole> roles = new HashSet<>();
 
     public User(String email, String username, String password, String name, String surname) {
         this.email = email;
@@ -42,14 +44,13 @@ public class User implements UserDetails {
         this.password = password;
         this.name = name;
         this.surname = surname;
-        roles.add(UserRole.USER);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (UserRole role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.name()));
+            authorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
         return authorities;
     }

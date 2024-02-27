@@ -1,10 +1,13 @@
 package it.epicode.U5W4BW.services;
 
 import it.epicode.U5W4BW.entities.User;
+import it.epicode.U5W4BW.entities.UserRole;
+import it.epicode.U5W4BW.enums.UserRoleType;
 import it.epicode.U5W4BW.exceptions.BadRequestException;
 import it.epicode.U5W4BW.payloads.NewUserDTO;
 import it.epicode.U5W4BW.payloads.UserLoginDTO;
 import it.epicode.U5W4BW.repositories.UserDAO;
+import it.epicode.U5W4BW.repositories.UserRoleDAO;
 import it.epicode.U5W4BW.security.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +24,8 @@ public class AuthSRV {
     private PasswordEncoder bcrypt;
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private UserRoleDAO userRoleDAO;
 
 
     public String authUserAndGenerateToken(UserLoginDTO payload) {
@@ -37,8 +42,18 @@ public class AuthSRV {
         userDAO.findByEmail(payload.email()).ifPresent(user -> {
             throw new BadRequestException("Email " + user.getEmail() + " already in use!");
         });
+        //Setto il ruolo di base come user
+        UserRole userRole = userRoleDAO.findByRole("user");
 
-        User newUser = new User(payload.email(), payload.username(), bcrypt.encode(payload.password()), payload.name(), payload.surname());
+        User newUser = new User(
+                payload.email(),
+                payload.username(),
+                bcrypt.encode(payload.password()),
+                payload.name(),
+                payload.surname()
+        );
+
+        newUser.getRoles().add(userRole);
 
         return userDAO.save(newUser);
     }
