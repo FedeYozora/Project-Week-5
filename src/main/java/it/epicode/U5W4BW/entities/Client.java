@@ -44,11 +44,11 @@ public class Client {
     @OneToMany(mappedBy = "client", orphanRemoval = true)
     private Set<Invoice> invoices = new LinkedHashSet<>();
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "registered_address_id")
     private Address registeredAddress;
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "headquarters_address_id")
     private Address headquartersAddress;
 
