@@ -27,6 +27,7 @@ public class Municipality {
     private String provinceSerial;
     @CsvBindByPosition(position = 2)
     private String name;
+    @Transient
     @CsvBindByPosition(position = 3)
     private String tempProvince;
     @JsonIgnore

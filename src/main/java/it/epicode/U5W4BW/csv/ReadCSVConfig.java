@@ -70,7 +70,6 @@ public class ReadCSVConfig {
         if (municipalityDAO != null) {
             for (Municipality municipality : beans) {
                 String name = String.valueOf(municipality.getTempProvince());
-                System.out.println(name);
                 String correctName = null;
                 Province province = null;
                 switch (name) {
