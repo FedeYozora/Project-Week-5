@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -103,13 +104,34 @@ public class ClientSRV {
         return url;
     }
 
-    public Address getAddress(NewClientDTO newClientDTO){
+    public Address getAddress(NewClientDTO newClientDTO) {
         return new Address(
                 newClientDTO.street(),
                 newClientDTO.streetNumber(),
                 newClientDTO.city(),
                 newClientDTO.zipCode(),
                 municipalityDAO.findByName(newClientDTO.municipalityName()));
+    }
+
+    public Page<Client> findByLastContactDate(int page, int size, String order, LocalDate lastContactDate) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+        return clientDAO.findByLastContactDate(pageable, lastContactDate);
+    }
+
+    public Page<Client> findByCreationDate(int page, int size, String order, LocalDate creationDate) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+        return clientDAO.findByCreationDate(pageable, creationDate);
+    }
+
+
+    public Page<Client> findByYearlyIncome(int page, int size, String order, double yearlyIncome) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+        return clientDAO.findByYearlyIncome(pageable, yearlyIncome);
+    }
+
+    public Page<Client> findByContactNameStartingWithIgnoreCase(int page, int size, String order, String name) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+        return clientDAO.findByContactNameStartingWithIgnoreCase(pageable, name);
     }
 
 

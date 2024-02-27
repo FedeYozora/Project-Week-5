@@ -53,7 +53,7 @@ public class InvoiceCTRL {
         this.invoiceSRV.deleteInvoice(id);
     }
 
-    @GetMapping("/filter/{request}")
+    @GetMapping("/filter")
     public Page<Invoice> getRequests(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "10") int size,
                                      @RequestParam(defaultValue = "id") String orderBy,
@@ -65,7 +65,7 @@ public class InvoiceCTRL {
 
         if (client_id != null) {
             try {
-                return invoiceSRV.findByIdClient(page, size > 20 ? 5 : size, orderBy, UUID.fromString((client_id)));
+                return invoiceSRV.findByIdClient(page, size, orderBy, UUID.fromString((client_id)));
             } catch (NumberFormatException e) {
                 throw new BadRequestException("Insert a valid client UUID");
             }
@@ -73,7 +73,7 @@ public class InvoiceCTRL {
 
         if (date != null) {
             try {
-                return invoiceSRV.findByEmissionDate(page, size > 20 ? 5 : size, orderBy, date);
+                return invoiceSRV.findByEmissionDate(page, size, orderBy, date);
             } catch (NumberFormatException e) {
                 throw new BadRequestException("Insert a valid year");
             }
@@ -81,7 +81,7 @@ public class InvoiceCTRL {
 
         if (year != null) {
             try {
-                return invoiceSRV.findByYear(page, size > 20 ? 5 : size, orderBy, Integer.parseInt(year));
+                return invoiceSRV.findByYear(page, size, orderBy, Integer.parseInt(year));
             } catch (NumberFormatException e) {
                 throw new BadRequestException("Insert a valid date");
             }
@@ -90,7 +90,7 @@ public class InvoiceCTRL {
 
         if (amount1 != null && amount2 != null) {
             try {
-                return invoiceSRV.findByAmount(page, size > 20 ? 5 : size, orderBy, Double.parseDouble(amount1), Double.parseDouble(amount2));
+                return invoiceSRV.findByAmount(page, size, orderBy, Double.parseDouble(amount1), Double.parseDouble(amount2));
             } catch (NumberFormatException e) {
                 throw new BadRequestException("Insert a valid amount");
             }
