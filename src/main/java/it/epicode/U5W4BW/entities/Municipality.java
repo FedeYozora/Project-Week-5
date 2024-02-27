@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table
+@Table(name = "municipalities")
 @Getter
 @Setter
 @NoArgsConstructor

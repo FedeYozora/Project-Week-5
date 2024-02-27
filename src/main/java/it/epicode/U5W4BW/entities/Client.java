@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table
+@Table(name = "clients")
 @Getter
 @Setter
 @NoArgsConstructor
