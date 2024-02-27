@@ -1,7 +1,6 @@
 package it.epicode.U5W4BW.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import it.epicode.U5W4BW.enums.UserRoleType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.apache.commons.lang3.builder.ToStringExclude;

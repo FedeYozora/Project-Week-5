@@ -4,6 +4,7 @@ import it.epicode.U5W4BW.entities.Client;
 import it.epicode.U5W4BW.entities.Invoice;
 import it.epicode.U5W4BW.entities.User;
 import it.epicode.U5W4BW.entities.UserRole;
+import it.epicode.U5W4BW.exceptions.BadRequestException;
 import it.epicode.U5W4BW.exceptions.NotFoundException;
 import it.epicode.U5W4BW.exceptions.UUIDNotFoundException;
 import it.epicode.U5W4BW.payloads.InvoiceDTO;
@@ -35,6 +36,10 @@ public class UserRoleSRV {
     }
 
     public UserRole saveRole(UserRoleDTO newRole) {
+        userRoleDAO.findByRole(newRole.role().toUpperCase())
+                .ifPresent(userRole -> {
+                    throw new BadRequestException("Role " + newRole.role().toUpperCase() + " already exist!");
+                });
         UserRole userRole = new UserRole(newRole.role().toUpperCase());
         return userRoleDAO.save(userRole);
     }

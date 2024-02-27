@@ -2,8 +2,8 @@ package it.epicode.U5W4BW.services;
 
 import it.epicode.U5W4BW.entities.User;
 import it.epicode.U5W4BW.entities.UserRole;
-import it.epicode.U5W4BW.enums.UserRoleType;
 import it.epicode.U5W4BW.exceptions.BadRequestException;
+import it.epicode.U5W4BW.exceptions.NotFoundException;
 import it.epicode.U5W4BW.payloads.NewUserDTO;
 import it.epicode.U5W4BW.payloads.UserLoginDTO;
 import it.epicode.U5W4BW.repositories.UserDAO;
@@ -43,7 +43,7 @@ public class AuthSRV {
             throw new BadRequestException("Email " + user.getEmail() + " already in use!");
         });
         //Setto il ruolo di base come user
-        UserRole userRole = userRoleDAO.findByRole("user");
+        UserRole userRole = userRoleDAO.findByRole("user").orElseThrow(() -> new NotFoundException("Role not found"));
 
         User newUser = new User(
                 payload.email(),
