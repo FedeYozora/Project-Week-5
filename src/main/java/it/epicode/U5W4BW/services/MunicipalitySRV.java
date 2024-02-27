@@ -3,6 +3,7 @@ package it.epicode.U5W4BW.services;
 import it.epicode.U5W4BW.entities.Municipality;
 import it.epicode.U5W4BW.exceptions.NotFoundException;
 import it.epicode.U5W4BW.repositories.MunicipalityDAO;
+import it.epicode.U5W4BW.repositories.ProvinceDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,8 @@ import java.util.UUID;
 public class MunicipalitySRV {
     @Autowired
     private MunicipalityDAO municipalityDAO;
+    @Autowired
+    private ProvinceDAO provinceDAO;
 
     public Municipality save(Municipality body) {
 

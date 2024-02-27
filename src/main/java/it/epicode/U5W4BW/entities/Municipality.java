@@ -27,7 +27,8 @@ public class Municipality {
     private String provinceSerial;
     @CsvBindByPosition(position = 2)
     private String name;
-
+    @CsvBindByPosition(position = 3)
+    private String tempProvince;
     @JsonIgnore
     @OneToMany(mappedBy = "municipality", orphanRemoval = true)
     private Set<Address> addresses = new LinkedHashSet<>();
@@ -40,5 +41,12 @@ public class Municipality {
         this.provinceCode = provinceCode;
         this.provinceSerial = provinceSerial;
         this.name = name;
+    }
+
+    public Municipality(String provinceCode, String provinceSerial, String name, String tempProvince) {
+        this.provinceCode = provinceCode;
+        this.provinceSerial = provinceSerial;
+        this.name = name;
+        this.tempProvince = tempProvince;
     }
 }
