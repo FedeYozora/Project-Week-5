@@ -10,7 +10,7 @@ public record InvoiceDTO(
         @NotBlank(message = "Client E-mail cannot be blank")
         String email,
         @Min(value = 50, message = "Minimum amount is 50$")
-        @NotBlank(message = "Invoice amount cannot be blank")
+//        @NotBlank(message = "Invoice amount cannot be blank")
         Double amount,
         @NotBlank(message = "Invoice status field cannot be empty")
         @Size(min = 3, max = 20, message = "Invoice status's length must be between 3 and 20 characters")

@@ -35,7 +35,7 @@ public record NewClientDTO(
         @NotBlank(message = "Contact phone number cannot be blank")
         @Size(min = 10, max = 20, message = "Contact phone number's length must be between 10 and 20 characters")
         String contactPhoneNumber,
-        @NotBlank(message = "Type cannot be blank")
+//        @NotBlank(message = "Type cannot be blank")
         @Enumerated(EnumType.STRING)
         ClientType type,
         @NotBlank(message = "Street cannot be blank")
