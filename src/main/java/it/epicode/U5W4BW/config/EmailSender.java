@@ -19,12 +19,9 @@ public class EmailSender {
     }
 
     public void sendInvoiceEmail(Client recipient) {
-        System.out.println("API Key: " + mailgunAPIKey);
-        System.out.println("Domain Name: " + domainName);
-
         Unirest.post("https://api.mailgun.net/v3/" + domainName + "/messages")
                 .basicAuth("api", mailgunAPIKey)
-                .queryString("from", "Francesco Buonocore <fbuonocore655@gmail.com>")
+                .queryString("from", "EnelG <enelg@gmail.com>")
                 .queryString("to", recipient.getContactEmail())
                 .queryString("subject", "Invoice sent")
                 .queryString("text", "The invoice has been sent to " + recipient.getContactName())
