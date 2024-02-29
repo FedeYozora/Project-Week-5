@@ -11,4 +11,7 @@ import java.util.UUID;
 public interface ProvinceDAO extends JpaRepository<Province, UUID> {
     @Query(value = "select p from Province p where p.name=:name")
     Province findByName(String name);
+
+    @Query(value = "select p from Province p where p.acronym=:acronym")
+    Province findByAcronym(String acronym);
 }

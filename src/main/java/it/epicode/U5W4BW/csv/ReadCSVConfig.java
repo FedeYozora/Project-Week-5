@@ -45,7 +45,7 @@ public class ReadCSVConfig {
                 .withSeparator(';')
                 .withSkipLines(1)
                 .build().parse();
-        if (provinceDAO == null) {
+        if (provinceDAO != null) {
             for (Province province : beans) {
                 Province newProvince = new Province(province.getName(), province.getAcronym(), province.getRegion());
                 provinceSRV.save(newProvince);
@@ -64,91 +64,66 @@ public class ReadCSVConfig {
                 .build().parse();
 
         int provinceSerialCounter = 1;
-        if (municipalityDAO == null) {
+        if (municipalityDAO != null) {
             for (Municipality municipality : beans) {
                 String name = String.valueOf(municipality.getTempProvince());
                 String correctName = null;
                 Province province = null;
-
                 switch (name) {
                     case "Monza e della Brianza":
                         province = provinceDAO.findByName("Monza-Brianza");
                         correctName = "Monza-Brianza";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "Verbano-Cusio-Ossola":
                         province = provinceDAO.findByName("Verbania");
                         correctName = "Verbania";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "Valle d'Aosta/Vallée d'Aoste":
                         province = provinceDAO.findByName("Aosta");
                         correctName = "Aosta";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "Sud Sardegna":
                         province = provinceDAO.findByName("Carbonia Iglesias");
                         correctName = "Carbonia Iglesias";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "Vibo Valentia":
                         province = provinceDAO.findByName("Vibo-Valentia");
                         correctName = "Vibo-Valentia";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "Ascoli Piceno":
                         province = provinceDAO.findByName("Ascoli-Piceno");
                         correctName = "Ascoli-Piceno";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "Pesaro e Urbino":
                         province = provinceDAO.findByName("Pesaro-Urbino");
                         correctName = "Pesaro-Urbino";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "Forlì-Cesena":
                         province = provinceDAO.findByName("Forli-Cesena");
                         correctName = "Forli-Cesena";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "Reggio nell'Emilia":
                         province = provinceDAO.findByName("Reggio-Emilia");
                         correctName = "Reggio-Emilia";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "La Spezia":
                         province = provinceDAO.findByName("La-Spezia");
                         correctName = "La-Spezia";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "Bolzano/Bozen":
                         province = provinceDAO.findByName("Bolzano");
                         correctName = "Bolzano";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     case "Reggio Calabria":
                         province = provinceDAO.findByName("Reggio-Calabria");
                         correctName = "Reggio-Calabria";
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                         break;
                     default:
                         province = provinceDAO.findByName(name);
                         correctName = name;
-                        province.setName(correctName);
-                        provinceDAO.save(province);
                 }
+                province.setName(correctName);
+                provinceDAO.save(province);
                 Province found = provinceDAO.findByName(correctName);
                 if (name.equals("Sassari")) {
                     String stringComp = "00" + provinceSerialCounter;
@@ -168,6 +143,11 @@ public class ReadCSVConfig {
                 }
             }
         }
+        provinceSRV.renameProvince("Carbonia Iglesias", "Sud Sardegna");
+        provinceSRV.renameAcronym("Roma", "RM");
+        provinceSRV.renameAcronym("CI", "SU");
+        provinceSRV.findByNameAndDelete("Ogliastra");
+        provinceSRV.findByNameAndDelete("Medio Campidano");
         return beans;
     }
 
