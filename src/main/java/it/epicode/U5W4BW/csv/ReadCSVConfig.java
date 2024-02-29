@@ -144,6 +144,10 @@ public class ReadCSVConfig {
             }
         }
         provinceSRV.renameProvince("Carbonia Iglesias", "Sud Sardegna");
+        provinceSRV.renameProvince("Forlì-Cesena", "Forlì-Cesena");
+        provinceSRV.renameProvince("Pesaro-Urbino", "Pesaro e Urbino");
+        provinceSRV.renameProvince("Vibo-Valentia", "Vibo Valentia");
+        provinceSRV.renameProvince("Verbania", "Verbano-Cusio-Ossola");
         provinceSRV.renameAcronym("Roma", "RM");
         provinceSRV.renameAcronym("CI", "SU");
         provinceSRV.findByNameAndDelete("Ogliastra");
