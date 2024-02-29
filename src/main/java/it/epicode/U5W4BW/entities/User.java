@@ -2,9 +2,10 @@ package it.epicode.U5W4BW.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.*;
-import org.apache.commons.lang3.builder.ToStringExclude;
-import org.hibernate.Hibernate;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +24,6 @@ public class User implements UserDetails {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private UUID id;
-
     private String email;
     private String username;
     private String password;

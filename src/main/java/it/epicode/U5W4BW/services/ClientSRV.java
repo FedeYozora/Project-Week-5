@@ -6,6 +6,7 @@ import it.epicode.U5W4BW.entities.Client;
 import it.epicode.U5W4BW.exceptions.BadRequestException;
 import it.epicode.U5W4BW.exceptions.NotFoundException;
 import it.epicode.U5W4BW.exceptions.UUIDNotFoundException;
+import it.epicode.U5W4BW.payloads.AddressDTO;
 import it.epicode.U5W4BW.payloads.NewClientDTO;
 import it.epicode.U5W4BW.repositories.ClientDAO;
 import it.epicode.U5W4BW.repositories.MunicipalityDAO;
@@ -58,8 +59,16 @@ public class ClientSRV {
                 newClient.contactSurname(),
                 newClient.contactPhoneNumber(),
                 newClient.type(),
-                addressSRV.saveAddress(newClient),
-                addressSRV.saveAddress(newClient)
+                addressSRV.saveAddress(new AddressDTO(
+                        newClient.street(),
+                        newClient.streetNumber(),
+                        newClient.city(),
+                        newClient.zipCode())),
+                addressSRV.saveAddress(new AddressDTO(
+                        newClient.street(),
+                        newClient.streetNumber(),
+                        newClient.city(),
+                        newClient.zipCode()))
         );
         return clientDAO.save(client);
     }
@@ -80,8 +89,16 @@ public class ClientSRV {
         found.setContactSurname(updatedClient.contactSurname());
         found.setContactPhoneNumber(updatedClient.contactPhoneNumber());
         found.setType(updatedClient.type());
-        found.setRegisteredAddress(addressSRV.saveAddress(updatedClient));
-        found.setHeadquartersAddress(addressSRV.saveAddress(updatedClient));
+        found.setRegisteredAddress(addressSRV.saveAddress(new AddressDTO(
+                updatedClient.street(),
+                updatedClient.streetNumber(),
+                updatedClient.city(),
+                updatedClient.zipCode())));
+        found.setHeadquartersAddress(addressSRV.saveAddress(new AddressDTO(
+                updatedClient.street(),
+                updatedClient.streetNumber(),
+                updatedClient.city(),
+                updatedClient.zipCode())));
         clientDAO.save(found);
         return found;
     }
