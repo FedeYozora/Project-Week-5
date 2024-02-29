@@ -2,7 +2,6 @@ package it.epicode.U5W4BW.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import it.epicode.U5W4BW.entities.Address;
 import it.epicode.U5W4BW.entities.Client;
 import it.epicode.U5W4BW.exceptions.BadRequestException;
 import it.epicode.U5W4BW.exceptions.NotFoundException;
@@ -33,6 +32,9 @@ public class ClientSRV {
     @Autowired
     private Cloudinary cloudinaryUploader;
 
+    @Autowired
+    private AddressSRV addressSRV;
+
 
     public Page<Client> getClients(int pageNum, int size, String orderBy) {
         if (size > 100) size = 100;
@@ -56,8 +58,8 @@ public class ClientSRV {
                 newClient.contactSurname(),
                 newClient.contactPhoneNumber(),
                 newClient.type(),
-                getAddress(newClient),
-                getAddress(newClient)
+                addressSRV.saveAddress(newClient),
+                addressSRV.saveAddress(newClient)
         );
         return clientDAO.save(client);
     }
@@ -78,8 +80,8 @@ public class ClientSRV {
         found.setContactSurname(updatedClient.contactSurname());
         found.setContactPhoneNumber(updatedClient.contactPhoneNumber());
         found.setType(updatedClient.type());
-        found.setRegisteredAddress(getAddress(updatedClient));
-        found.setHeadquartersAddress(getAddress(updatedClient));
+        found.setRegisteredAddress(addressSRV.saveAddress(updatedClient));
+        found.setHeadquartersAddress(addressSRV.saveAddress(updatedClient));
         clientDAO.save(found);
         return found;
     }
@@ -104,14 +106,6 @@ public class ClientSRV {
         return url;
     }
 
-    public Address getAddress(NewClientDTO newClientDTO) {
-        return new Address(
-                newClientDTO.street(),
-                newClientDTO.streetNumber(),
-                newClientDTO.city(),
-                newClientDTO.zipCode(),
-                municipalityDAO.findByName(newClientDTO.municipalityName()));
-    }
 
     public Page<Client> findByLastContactDate(int page, int size, String order, LocalDate lastContactDate) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(order));
