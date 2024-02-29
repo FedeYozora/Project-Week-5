@@ -4,7 +4,7 @@ import it.epicode.U5W4BW.entities.Address;
 import it.epicode.U5W4BW.entities.Municipality;
 import it.epicode.U5W4BW.exceptions.NotFoundException;
 import it.epicode.U5W4BW.exceptions.UUIDNotFoundException;
-import it.epicode.U5W4BW.payloads.NewClientDTO;
+import it.epicode.U5W4BW.payloads.AddressDTO;
 import it.epicode.U5W4BW.repositories.AddressDAO;
 import it.epicode.U5W4BW.repositories.MunicipalityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class AddressSRV {
 
     }
 
-    public Address saveAddress(NewClientDTO body) {
+    public Address saveAddress(AddressDTO body) {
         Municipality found = municipalityDAO.findByName(body.city()).orElseThrow(() -> new NotFoundException(body.city()));
 
         return addressDAO.save(new Address(body.street(), body.streetNumber(), body.city(), body.zipCode(), found));
