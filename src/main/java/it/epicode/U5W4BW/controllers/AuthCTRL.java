@@ -22,7 +22,7 @@ public class AuthCTRL {
     public AuthSRV authSRV;
 
     @PostMapping("/login")
-    private LoginResponseDTO login(@RequestBody @Validated UserLoginDTO payload, BindingResult validation) {
+    public LoginResponseDTO login(@RequestBody @Validated UserLoginDTO payload, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
         }
