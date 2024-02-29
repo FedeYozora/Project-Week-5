@@ -16,7 +16,6 @@ public record NewUserDTO(
         String surname,
         @Email(message = "E-mail format is not valid")
         @NotBlank(message = "Email field cannot be empty")
-        @Size(min = 2, max = 20, message = "E-mail's length must be between 2 and 20 characters")
         String email,
         @NotBlank(message = "Password field cannot be empty")
         @Size(min = 8, max = 20, message = "Password's length must be between 8 and 20 characters")
