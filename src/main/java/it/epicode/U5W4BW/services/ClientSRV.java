@@ -59,8 +59,16 @@ public class ClientSRV {
                 newClient.contactSurname(),
                 newClient.contactPhoneNumber(),
                 newClient.type(),
-                addressSRV.saveAddress(newClient),
-                addressSRV.saveAddress(newClient)
+                addressSRV.saveAddress(new AddressDTO(
+                        newClient.street(),
+                        newClient.streetNumber(),
+                        newClient.city(),
+                        newClient.zipCode())),
+                addressSRV.saveAddress(new AddressDTO(
+                        newClient.street(),
+                        newClient.streetNumber(),
+                        newClient.city(),
+                        newClient.zipCode()))
         );
         return clientDAO.save(client);
     }
