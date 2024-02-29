@@ -40,4 +40,27 @@ public class ProvinceSRV {
         return provinceDAO.findByName(name);
 
     }
+
+    public void renameAcronym(String oldAcr, String newAcr) {
+        Province province = provinceDAO.findByAcronym(oldAcr);
+        if (province != null) {
+            province.setAcronym(newAcr);
+            provinceDAO.save(province);
+        }
+    }
+
+    public void renameProvince(String oldName, String newName) {
+        Province province = provinceDAO.findByName(oldName);
+        if (province != null) {
+            province.setName(newName);
+            provinceDAO.save(province);
+        }
+    }
+
+    public void findByNameAndDelete(String name) {
+        Province found = provinceDAO.findByName(name);
+        if (found != null) {
+            provinceDAO.delete(found);
+        }
+    }
 }
