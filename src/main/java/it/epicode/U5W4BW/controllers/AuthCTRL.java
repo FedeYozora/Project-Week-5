@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthCTRL {
 
     @Autowired
-    private AuthSRV authSRV;
+    public AuthSRV authSRV;
 
     @PostMapping("/login")
     private LoginResponseDTO login(@RequestBody @Validated UserLoginDTO payload, BindingResult validation) {
@@ -31,7 +31,7 @@ public class AuthCTRL {
     }
 
     @PostMapping("/register")
-    private User register(@RequestBody @Validated NewUserDTO payload, BindingResult validation) {
+    public User register(@RequestBody @Validated NewUserDTO payload, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
         }
