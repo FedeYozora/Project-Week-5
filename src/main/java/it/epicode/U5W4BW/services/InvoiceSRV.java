@@ -1,5 +1,6 @@
 package it.epicode.U5W4BW.services;
 
+import it.epicode.U5W4BW.config.EmailSender;
 import it.epicode.U5W4BW.entities.Client;
 import it.epicode.U5W4BW.entities.Invoice;
 import it.epicode.U5W4BW.entities.InvoiceStatus;
@@ -26,6 +27,8 @@ public class InvoiceSRV {
     private ClientDAO clientDAO;
     @Autowired
     private InvoiceStatusDAO invoiceStatusDAO;
+    @Autowired
+    private EmailSender emailSender;
 
     public Page<Invoice> getInvoices(int pageNum, int size, String orderBy) {
         if (size > 100) size = 100;
@@ -46,8 +49,9 @@ public class InvoiceSRV {
                 .findByStatus(newInvoice.invoice_status())
                 .orElseThrow(() -> new NotFoundException(newInvoice.invoice_status()));
         Invoice invoice = new Invoice(newInvoice.amount(), found, invoiceStatus);
-        return invoiceDAO.save(invoice);
-
+        Invoice savedInvoice = invoiceDAO.save(invoice);
+        emailSender.sendInvoiceEmail(found);
+        return savedInvoice;
     }
 
     public void deleteInvoice(Long id) {

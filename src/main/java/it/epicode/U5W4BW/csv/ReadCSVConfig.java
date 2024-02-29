@@ -45,7 +45,7 @@ public class ReadCSVConfig {
                 .withSeparator(';')
                 .withSkipLines(1)
                 .build().parse();
-        if (provinceDAO != null) {
+        if (provinceDAO == null) {
             for (Province province : beans) {
                 Province newProvince = new Province(province.getName(), province.getAcronym(), province.getRegion());
                 provinceSRV.save(newProvince);
@@ -64,7 +64,7 @@ public class ReadCSVConfig {
                 .build().parse();
 
         int provinceSerialCounter = 1;
-        if (municipalityDAO != null) {
+        if (municipalityDAO == null) {
             for (Municipality municipality : beans) {
                 String name = String.valueOf(municipality.getTempProvince());
                 String correctName = null;

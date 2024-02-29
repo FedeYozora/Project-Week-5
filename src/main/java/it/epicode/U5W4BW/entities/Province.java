@@ -1,5 +1,6 @@
 package it.epicode.U5W4BW.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opencsv.bean.CsvBindByPosition;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Province {
     @CsvBindByPosition(position = 2)
     private String region;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "province", orphanRemoval = true)
     @ToString.Exclude
     private Set<Municipality> municipalities = new LinkedHashSet<>();
